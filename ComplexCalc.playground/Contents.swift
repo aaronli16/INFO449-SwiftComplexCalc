@@ -28,6 +28,86 @@ print("Welcome back to the UW Calculator")
 //: IMPORTANT: If any tests are commented out, you will be graded a zero (0)! You should never be in the habit of eliminating tests to make the code pass.
 //:
 class Calculator {
+    
+    // Simple Operations
+    func add(lhs: Int, rhs: Int) -> Int {
+        return lhs + rhs
+    }
+    func subtract(lhs: Int, rhs: Int) -> Int {
+        return lhs - rhs
+    }
+    
+    func multiply(lhs: Int, rhs: Int) -> Int {
+        return lhs * rhs
+    }
+    func divide(lhs: Int, rhs: Int) -> Double {
+        return Double(lhs) / Double(rhs)
+    }
+    // 3 or more operations (Add and multiply)
+    func add(_ nums: [Int]) -> Int {
+        var res = 0
+        for num in nums{
+            res += num
+        }
+        return res
+    }
+    
+    func multiply(_ nums: [Int]) -> Int {
+        var res = 1
+        for num in nums{
+            res *= num
+        }
+        return res
+    }
+    
+    
+    func count(_ nums: [Int]) -> Int{
+        return nums.count
+    }
+    
+    func avg(_ nums: [Int]) -> Double{
+        if nums.isEmpty{
+            return 0
+        }
+        var sum = 0
+        for num in nums{
+            sum += num
+        }
+        return Double(sum) / Double(nums.count)
+    }
+    
+    //mathOps
+    func mathOp(lhs: Int, rhs: Int, op: (Int, Int) -> Int) -> Int {
+        return op(lhs, rhs)
+    }
+    
+    
+    func mathOp(args:[Int], beg: Int, op: (Int, Int) -> Int) -> Int {
+        var result = beg
+        
+        for num in args{
+            result = op(result, num)
+        }
+        return result
+    }
+    
+    // Cartesian points with Tuples
+    func add(lhs: (Int, Int), rhs: (Int, Int)) -> (Int, Int) {
+        return (lhs.0 + rhs.0, lhs.1 + rhs.1)
+    }
+    func subtract(lhs: (Int, Int), rhs: (Int, Int)) -> (Int, Int) {
+        return (lhs.0 - rhs.0, lhs.1 - rhs.1)
+    }
+    
+    // Cartesian Points with Dictionaries
+    
+    func add(lhs: [String: Int], rhs: [String: Int]) -> [String : Int] {
+        return ["x": (lhs["x"] ?? 0) + (rhs["x"] ?? 0), "y": (lhs["y"] ?? 0) + (rhs["y"] ?? 0)]
+    }
+    func subtract(lhs: [String: Int], rhs: [String: Int]) -> [String : Int] {
+        return ["x": (lhs["x"] ?? 0) - (rhs["x"] ?? 0), "y": (lhs["y"] ?? 0) - (rhs["y"] ?? 0)]
+    }
+    
 }
 
 //: Don't change the name of this object (`calc`); it's used in all the tests.
@@ -44,6 +124,30 @@ let calc = Calculator()
 
 // ===== Your tests go here
 
+//Empty array tests
+calc.add([]) == 0
+
+// Ambiguity: 0 or 1
+// Decision: Consulted chatgpt with this and we decided to have it be 1 because when you multiply nothing, by convention it is equal to the multiplicative identity which is 1. Similar to how adding nothing by convention, its equal to the additive identity which is 0.
+calc.multiply([]) == 1
+
+calc.avg([]) == 0
+
+// Should just return the beg value.
+calc.mathOp(args: [], beg: 5, op: { $0 + $1 }) == 5
+
+// Negative numbers test
+calc.multiply(lhs: -2, rhs: -3) == 6
+calc.mathOp(lhs: 5, rhs: -3, op: { $0 - $1 }) == 8
+calc.add(lhs: (-3, -5), rhs: (-2, -4)) == (-5, -9)
+calc.subtract(lhs: (-3, -5), rhs: (-2, -4)) == (-1, -1)
+
+
+// division edge case
+calc.divide(lhs: 1, rhs: 0) == Double.infinity
+
+// avg - Double value result cases
+calc.avg([1, 2]) == 1.5
 //: ---
 //: ## Test code block
 //: Do not modify the code in this section
